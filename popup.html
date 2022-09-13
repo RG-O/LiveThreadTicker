@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/popup.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed:wght@300&display=swap');
+    </style>
+</head>
+<body>
+    <form id="optionsForm">
+        <input class="power-button" type="checkbox" name="tickerActive" id="tickerActive">
+        <label for="tickerActive"><span><br><br><br>Click to enable</span></label>
+        <h1><span style="color: rgb(140, 179, 210);">L</span>TT</h1>
+        <br>
+        <b>Live Thread Comment Section URL:</b>
+        <input type="text" name="rLTURL" id="rLTURL"><br>
+        <br>
+        <b>Display Location:</b>
+        <label class="display-location-label" for="displayLocation-bottom">Bottom</label>
+        <input type="radio" id="displayLocation-bottom" name="displayLocation" value="bottom">
+        <label class="display-location-label" for="displayLocation-top">Top</label>
+        <input type="radio" id="displayLocation-top" name="displayLocation" value="top"><br>
+        <br>
+        <b>Upvote Display Minimum:</b>
+        <input type="number" name="upVoteMin" id="upVoteMin"><br>
+        <br>
+        <b>Comment Delay Time (seconds):</b>
+        <input type="number" name="delaySeconds" id="delaySeconds"><br>
+        <br>
+        <b>Comment Load Intervals (seconds):</b>
+        <input type="number" name="commentLoadInterval" id="commentLoadInterval"><br>
+        <br>
+        <b>Comment Font Size (pixels):</b>
+        <input type="number" name="commentFontSize" id="commentFontSize"><br>
+        <br>
+        <button id="ltt-expand-button" type="button" class="collapsible">Show Advanced Settings...</button>
+        <div class="advanced">
+            <span style="text-decoration: underline;"><b>Advanced Settings</b></span><br>
+            <br>
+            <input type="checkbox" name="upVoteFallback" id="upVoteFallback">
+            <label class="upvote-fallback-label" for="upVoteFallback">
+                Drop upvote minimum if no recent comments meet threshold? (Vote count will display in red when occurs)
+            </label><br>
+            <br>
+            <input type="checkbox" name="scrollEnabled" id="scrollEnabled">
+            <label class="scroll-enabled-label" for="scrollEnabled">
+                Enable scrolling? (beta)
+            </label><br>
+            <br>
+            <b>Max Comments Loaded Per Batch:</b>
+            <input type="number" name="maxCommentLoad" id="maxCommentLoad"><br>
+            <br>
+            <b>Display Level:</b>
+            <label class="display-level-label" for="displayLevel-vid1">Video Level 1</label>
+            <input type="radio" id="displayLevel-vid1" name="displayLevel" value="vid1"><br>
+            <label class="display-level-label" for="displayLevel-vid2">Video Level 2</label>
+            <input type="radio" id="displayLevel-vid2" name="displayLevel" value="vid2"><br>
+            <label class="display-level-label" for="displayLevel-vid3">Video Level 3</label>
+            <input type="radio" id="displayLevel-vid3" name="displayLevel" value="vid3"><br>
+            <label class="display-level-label" for="displayLevel-vid4">Video Level 4</label>
+            <input type="radio" id="displayLevel-vid4" name="displayLevel" value="vid4"><br>
+            <label class="display-level-label" for="displayLevel-bottom">Site Specific</label>
+            <input type="radio" id="displayLevel-video" name="displayLevel" value="video"><br>
+            <label class="display-level-label" for="displayLevel-page">Page</label>
+            <input type="radio" id="displayLevel-page" name="displayLevel" value="page"><br>
+            <span class="note">
+                Recommended Display Level setting is "Video Level 2". If ticker is not loading on video or not carrying over to full screen, try toggling between the different levels. Last resort should be "Page".
+                If set to "Page" and ticker is disappearing when switching video to full screen, try using key F11 to enable full screen instead of the full screen button on the video player.
+                WARNING: Ticker most likely will not display if Display Location is set to "Bottom" and Display Level is set to "Video Level 1"
+            </span><br>
+            <br>
+            <b>Text Exclusion List</b><span class="note"> (seperate values with commas)</span><b>:</b>
+            <input type="text" name="textExclusionList" id="textExclusionList"><br>
+            <span class="note">
+                This will suppress displaying comments that contain any of the values that you enter. Example: "commercial,commentary,suck"
+            </span><br>
+            <br>
+        </div>
+    </form>
+    <br>
+    <div>
+        <button id="ltt-save-button">Save</button>
+        <button id="ltt-close-button">Close</button>
+    </div>
+    <script src="simple/popup.js"></script>
+</body>
+</html>

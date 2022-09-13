@@ -1,0 +1,53 @@
+.espn-livethreadticker {
+    line-height: normal;
+}
+
+.cbssports-livethreadticker {
+    line-height: normal;
+}
+
+.masters-livethreadticker {
+    line-height: normal;
+}
+
+.reddit-livethreadticker {
+    line-height: normal;
+}
+
+.com-livethreadticker {
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.ir-livethreadticker div {
+    text-align: left;
+}
+
+.ltt-scroll-container {
+    position: relative;
+}
+
+.ltt-logo-scroll {
+    background-color: black;
+    position: relative;
+    z-index: 2147483647;
+    margin-left: -0.5rem;
+    top: -1px;
+}
+
+.ltt-scroll {
+    left: 0;
+    white-space: nowrap;
+    position: absolute !important;
+    animation: marquee-ltt 500s linear infinite;
+}
+
+@keyframes marquee-ltt {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100000%;
+    }
+}

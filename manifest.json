@@ -1,0 +1,28 @@
+{
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "js": [ "js/initiate-ticker.js", "js/html-generator.js", "js/comment-fetcher.js" ],
+      "css": [ "css/ticker.css" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_idle"
+    }
+  ],
+  "description": "Live Thread Ticker (LTT) adds a ticker to videos to display live comments from threads",
+  "icons": {
+    "128": "icon.png"
+  },
+  "manifest_version": 3,
+  "name": "Live Thread Ticker",
+  "permissions": [ "storage" ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon.png",
+      "16": "iconSm.png",
+      "32": "icon.png",
+      "48": "icon.png"
+    }
+  },
+  "version": "1.8"
+}
