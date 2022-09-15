@@ -1,12 +1,24 @@
 
-//grab user set prefs from chrome
+//grab user set prefs from chrome 
 chrome.storage.sync.get(['displayLocation', 'commentFontSize'], (result) => {
     if (result.displayLocation == "bottom") {
-        //set for displaying ticker at bottom of video        displayLocation = "";    } else {        //set for displaying ticker at top of video        displayLocation = "top: 0px;";
-    }    if (result.commentFontSize == null) {
-        //set for displaying ticker at bottom of video        commentBodySize = 22;        tickerHeightSize = 28;    } else {        //set for displaying ticker at top of video        commentBodySize = result.commentFontSize;
+        //set for displaying ticker at bottom of video
+        displayLocation = "";
+    } else {
+        //set for displaying ticker at top of video
+        displayLocation = "top: 0px;";
+    }
+
+    if (result.commentFontSize == null) {
+        //set for displaying ticker at bottom of video
+        commentBodySize = 22;
+        tickerHeightSize = 28;
+    } else {
+        //set for displaying ticker at top of video
+        commentBodySize = result.commentFontSize;
         tickerHeightSize = Math.ceil(result.commentFontSize * 1.272);
-    }});
+    }
+});
 
 //generate HTML for ticker
 function getTickerInsertHTML(lTTSiteId) {
