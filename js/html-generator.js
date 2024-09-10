@@ -1,5 +1,5 @@
 
-//grab user set prefs from chrome
+//grab user set prefs from chrome 
 chrome.storage.sync.get(['displayLocation', 'commentFontSize'], (result) => {
     if (result.displayLocation == "bottom") {
         //set for displaying ticker at bottom of video
@@ -10,11 +10,11 @@ chrome.storage.sync.get(['displayLocation', 'commentFontSize'], (result) => {
     }
 
     if (result.commentFontSize == null) {
-        //set for displaying ticker at bottom of video
+        //set font size to these values since the user hasn't set them yet
         commentBodySize = 22;
         tickerHeightSize = 28;
     } else {
-        //set for displaying ticker at top of video
+        //use user defined font sizes
         commentBodySize = result.commentFontSize;
         tickerHeightSize = Math.ceil(result.commentFontSize * 1.272);
     }
