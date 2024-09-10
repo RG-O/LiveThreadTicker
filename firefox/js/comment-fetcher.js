@@ -1,4 +1,3 @@
-//establishing variables, not sure I even need to do this? seems to work fine sometimes when I don't
 var jsonRLTURL;
 var upVoteMin;
 var delaySeconds;
