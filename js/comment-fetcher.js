@@ -34,7 +34,7 @@ chrome.storage.sync.get(['rLTURL', 'upVoteMin', 'delaySeconds', 'commentLoadInte
             usernameSize = Math.round(result.commentFontSize * 0.636);
         }
         if (result.textExclusionList == null) {
-            //if the text exlcusion list has not been set by the user yet, I set it here so the comment fetcher doesn't spit out errors when it tries to load it
+            //if the text exclusion list has not been set by the user yet, I set it here so the comment fetcher doesn't spit out errors when it tries to load it
             textExclusionList1 = ''
             chrome.storage.sync.set({ textExclusionList: textExclusionList1 });
         } else if (result.textExclusionList != '') {
@@ -43,6 +43,14 @@ chrome.storage.sync.get(['rLTURL', 'upVoteMin', 'delaySeconds', 'commentLoadInte
         }
     }
 });
+
+//creating logo elements
+var l = document.createElement('span')
+l.textContent = "L"
+l.style.color = "rgb(140, 179, 210)"
+var tt = document.createElement('span')
+tt.textContent = "TT "
+
 
 //kicking off comment fetcher initiation
 kickOff();
@@ -75,9 +83,9 @@ function fetchComments() {
     if (tickerActive == true) {
         //if the user has not set their chrome prefs yet, the ticker will indicate to do so
         if (upVoteMin == null) {
-            document.getElementById("tickerCommentSlot").innerHTML = "To initiate Live Thread Ticker: Please click on the LTT Chrome extension icon, input comment thread URL, and then click save"
+            document.getElementById("tickerCommentSlot").textContent = "To initiate Live Thread Ticker: Please click on the LTT Chrome extension icon, input comment thread URL, and then click save"
         } else {
-            //grabing some of the user set values again, this allows some of the changes to take effect without refreshing the page the ticker is on
+            //grabbing some of the user set values again, this allows some of the changes to take effect without refreshing the page the ticker is on
             chrome.storage.sync.get(['rLTURL', 'upVoteMin', 'delaySeconds', 'maxCommentLoad', 'tickerActiveChrome', 'upVoteFallback', 'textExclusionList', 'scrollEnabled'], (result) => {
                 jsonRLTURL = result.rLTURL.slice(0, -1) + ".json?sort=new"
                 upVoteMin = result.upVoteMin;
@@ -87,7 +95,7 @@ function fetchComments() {
                 upVoteFallback = Boolean(result.upVoteFallback);
                 scrollEnabled = Boolean(result.scrollEnabled);
                 if (result.textExclusionList == null || result.textExclusionList == '') {
-                    //if the text exlcusion list has not been set by the user yet or set and then removed, I set it here to a nonsense value that will most likely never come up
+                    //if the text exclusion list has not been set by the user yet or set and then removed, I set it here to a nonsense value that will most likely never come up
                     textExclusionList = 'sfNWEfsjlfiwenl'
                     textExclusionListArr = textExclusionList.split(',')
                 } else {
@@ -96,11 +104,18 @@ function fetchComments() {
                 }
             });
 
-            //establishing variables
-            var fullCommentList = ''
-            var finalOutput = ''
-            //This is the "logo"
-            var beginning = '<span style=\"color: rgb(140, 179, 210);\">L</span>TT '
+            //establishing/clearing variables
+            var finalHtml = document.createElement('div')
+            var commentBatchHtml = document.createElement('span')
+            commentBatchHtml.appendChild(l.cloneNode(true))
+            commentBatchHtml.appendChild(tt.cloneNode(true))
+            var usernameSpan = document.createElement('span')
+            var upVotesSpan = document.createElement('span')
+            var commentSpan = document.createElement('span')
+            usernameSpan.style.fontSize = usernameSize + "px"
+            usernameSpan.style.color = "rgb(140, 179, 210)"
+            upVotesSpan.style.fontSize = usernameSize + "px"
+            upVotesSpan.style.color = "rgb(140, 179, 210)"
 
             //fetching the json from the user inputted url
             //adding date to the end of the url since firefox won't bother re-reading something it just read
@@ -109,73 +124,74 @@ function fetchComments() {
                 .then(body => {
                     //parsing through the comments, also index1 to limit the number of comments loaded base on the user set max
                     for (let index = 0, index1 = 0; index < body[1].data.children.length && index1 < maxCommentLoad; index++) {
-                        //only grabing comments that meet the user set parameters and aren't a stickied comment
+                        //only grabbing comments that meet the user set parameters and aren't a stickied comment
                         if (body[1].data.children[index].data.ups >= upVoteMin && body[1].data.children[index].data.stickied == false && (body[1].data.children[index].data.created_utc * 1000) < (Date.now() - delayMiliSeconds) && textExclusionListArr.some(substring => body[1].data.children[index].data.body.toUpperCase().includes(substring)) == false) {
                             let author = body[1].data.children[index].data.author
                             let comment = body[1].data.children[index].data.body
                             let upVotes = body[1].data.children[index].data.ups
                             index1++
-                            //concatenating comment after comment, also changing name and vote font size and color
-                            fullCommentList += " <span style=\"font-size: " + usernameSize + "px; color: rgb(140, 179, 210);\">" + author + "(" + upVotes + "):</span>" + comment + "&nbsp;";
+			    //adding external content only with textContent
+                            usernameSpan.textContent = author
+                            upVotesSpan.textContent = "(" + upVotes + "):"
+                            commentSpan.textContent = comment + " "
+                            commentBatchHtml.appendChild(usernameSpan.cloneNode(true))
+                            commentBatchHtml.appendChild(upVotesSpan.cloneNode(true))
+                            commentBatchHtml.appendChild(commentSpan.cloneNode(true))
                         }
                     }
-                    //check to see if any comments that met the requirments were found AND if the user has the upvote fallback preference set
-                    if (fullCommentList == '' && upVoteFallback == true) {
+                    //check to see if any comments that met the requirements were found AND if the user has the upvote fallback preference set
+                    if (commentBatchHtml.childNodes.length <= 2 && upVoteFallback == true) {
+                        //set upvote color to red to indicate upvote threshold not met
+                        upVotesSpan.style.color = "rgb(255, 68, 51)"
                         //if none were found, we are going to try to grab again, but this time ignoring the min upvote requirement
                         for (let index = 0, index1 = 0; index < body[1].data.children.length && index1 < maxCommentLoad; index++) {
-                            //only grabing comments that meet the user set parameters and aren't a stickied comment (ignoring the upvote minimum)
+                            //only grabbing comments that meet the user set parameters and aren't a stickied comment (ignoring the upvote minimum)
                             if (body[1].data.children[index].data.stickied == false && (body[1].data.children[index].data.created_utc * 1000) < (Date.now() - delayMiliSeconds) && textExclusionListArr.some(substring => body[1].data.children[index].data.body.toUpperCase().includes(substring)) == false) {
                                 let author = body[1].data.children[index].data.author
                                 let comment = body[1].data.children[index].data.body
                                 let upVotes = body[1].data.children[index].data.ups
                                 index1++
-                                //concatenating comment after comment, also changing name and vote font size and color, but this time changing the upvote count to red to indicate to the user that we had to drop the min upvote requirements
-                                fullCommentList += " <span style=\"font-size: " + usernameSize + "px; color: rgb(140, 179, 210);\">" + author + "(" + "<span style=\"!important; color: rgb(255, 68, 51);\">" + upVotes + "</span>" + "):</span>" + comment + "&nbsp;";
+				//adding external content only with textContent
+                                usernameSpan.textContent = author
+                                upVotesSpan.textContent = "(" + upVotes + "):"
+                                commentSpan.textContent = comment + " "
+                                commentBatchHtml.appendChild(usernameSpan.cloneNode(true))
+                                commentBatchHtml.appendChild(upVotesSpan.cloneNode(true))
+                                commentBatchHtml.appendChild(commentSpan.cloneNode(true))
                             }
                         }
-                        //adding scroll if the user has it set
+                    }
+                    //rechecking to see if the ticker div is still set as some pages can remove the video without refreshing the page
+                    tickerLoaded = !!document.getElementById("tickerCommentSlot");
+                    //only initiating if user set the ticker to be active
+                    if (tickerLoaded == true) {
+                        //adding scroll if the user has it set and pushing it out to the webpage
                         if (scrollEnabled == true) {
-                            beginning = "<span class=\"ltt-scroll-container\"><span class=\"ltt-logo-scroll\">&nbsp;&nbsp;" + beginning + "&nbsp;</span>"
-                            fullCommentList = " <span class=\"ltt-scroll\" style=\"animation-delay: " + scrollingDelay + "s;\">LTT&nbsp;&nbsp;&nbsp;" + fullCommentList + "</span></span>"
-                        }
-                        //adding "logo" before the string of comments
-                        finalOutput = beginning.concat(fullCommentList)
-                        //rechecking to see if the ticker div is still set as some pages can remove the video without refreshing the page
-                        tickerLoaded = !!document.getElementById("tickerCommentSlot");
-                        //only initiating if user set the ticker to be active
-                        if (tickerLoaded == true) {
-                            //pushing the result out into the ticker div
-                            document.getElementById("tickerCommentSlot").innerHTML = finalOutput
+                            var scrollContainerSpan = document.createElement('span')
+                            scrollContainerSpan.className = "ltt-scroll-container"
+                            var scrollLogoSpan = document.createElement('span')
+                            scrollLogoSpan.className = "ltt-logo-scroll"
+                            var scrollSpan = document.createElement('span')
+                            scrollSpan.className = "ltt-scroll"
+                            scrollSpan.style.animationDelay = scrollingDelay + "s"
+                            scrollLogoSpan.appendChild(l.cloneNode(true))
+                            scrollLogoSpan.appendChild(tt.cloneNode(true))
+                            scrollContainerSpan.appendChild(scrollLogoSpan.cloneNode(true))
+                            scrollSpan.appendChild(commentBatchHtml.cloneNode(true))
+                            scrollContainerSpan.appendChild(scrollSpan.cloneNode(true))
+                            document.getElementById("tickerCommentSlot").replaceChildren(scrollContainerSpan)
                         } else {
-                            //since the ticker div is now gone for whatever reason, clear the current comment fetching interval and basically restart the whole extension
-                            clearInterval(commentFetchInterval)
-                            blastOff()
-                            kickOff()
+                            //pushing the result out into the ticker div on the webpage
+                            document.getElementById("tickerCommentSlot").replaceChildren(commentBatchHtml)
                         }
                     } else {
-                        //if at least one comment was found with the full requirements including the min upvote, we are going to display it
-                        //adding scroll if the user has it set
-                        if (scrollEnabled == true) {
-                            beginning = "<span class=\"ltt-scroll-container\"><span class=\"ltt-logo-scroll\">&nbsp;&nbsp;" + beginning + "&nbsp;</span>"
-                            fullCommentList = " <span class=\"ltt-scroll\" style=\"animation-delay: " + scrollingDelay + "s;\">LTT&nbsp;&nbsp;&nbsp;" + fullCommentList + "</span></span>"
-                        }
-                        //adding "logo" before the string of comments
-                        finalOutput = beginning.concat(fullCommentList)
-                        //rechecking to see if the ticker div is still set as some pages can remove the video without refreshing the page
-                        tickerLoaded = !!document.getElementById("tickerCommentSlot");
-                        //only initiating if user set the ticker to be active
-                        if (tickerLoaded == true) {
-                            //pushing the result out into the ticker div
-                            document.getElementById("tickerCommentSlot").innerHTML = finalOutput
-                        } else {
-                            //since the ticker div is now gone for whatever reason, clear the current comment fetching interval and basically restart the whole extension
-                            clearInterval(commentFetchInterval)
-                            blastOff()
-                            kickOff()
-                        }
+                        //since the ticker div is now gone for whatever reason, clear the current comment fetching interval and basically restart the whole extension
+                        clearInterval(commentFetchInterval)
+                        blastOff()
+                        kickOff()
                     }
                 }
-                );
+            );
         }
     }
 }

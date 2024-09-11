@@ -1,14 +1,7 @@
 
 //grab user set prefs from chrome 
 chrome.storage.sync.get(['displayLocation', 'commentFontSize'], (result) => {
-    if (result.displayLocation == "bottom") {
-        //set for displaying ticker at bottom of video
-        displayLocation = "";
-    } else {
-        //set for displaying ticker at top of video
-        displayLocation = "top: 0px;";
-    }
-
+    displayLocation = result.displayLocation;
     if (result.commentFontSize == null) {
         //set font size to these values since the user hasn't set them yet
         commentBodySize = 22;
@@ -22,12 +15,29 @@ chrome.storage.sync.get(['displayLocation', 'commentFontSize'], (result) => {
 
 //generate HTML for ticker
 function getTickerInsertHTML(lTTSiteId) {
-            return `
-    <div class="${lTTSiteId}" style="background-color: rgba(0, 0, 0, 0.8); height: ${tickerHeightSize}px; bottom: 0; position: absolute !important; overflow: hidden !important; z-index: 2147483647 !important; border-left: 0; border-right: 0; ${displayLocation} width: 100%;">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
-        <div id = "tickerCommentSlot" style="margin: 0 -0.25rem; font-family: 'Roboto Condensed', sans-serif; padding-left: 7px; color: white; font-size: ${commentBodySize}px"></div>
-    </div>
-    `
+    var mainDiv = document.createElement('div')
+    mainDiv.className = "ltt-main " + lTTSiteId
+    mainDiv.style.height = tickerHeightSize + "px"
+    if (displayLocation == "top" || displayLocation == null) {
+        //set for displaying ticker at top of video
+        mainDiv.style.top = "0px"
+    }
+    var fontLink1 = document.createElement('link')
+    fontLink1.rel = "preconnect"
+    fontLink1.href = "https://fonts.googleapis.com"
+    var fontLink2 = document.createElement('link')
+    fontLink2.rel = "preconnect"
+    fontLink2.href = "https://fonts.gstatic.com"
+    var fontLink3 = document.createElement('link')
+    fontLink3.href = "https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap"
+    fontLink3.rel = "stylesheet"
+    mainDiv.appendChild(fontLink1)
+    mainDiv.appendChild(fontLink2)
+    mainDiv.appendChild(fontLink3)
+    var tickerCommentSlotDiv = document.createElement('div')
+    tickerCommentSlotDiv.className = "ltt-comment-slot"
+    tickerCommentSlotDiv.id = "tickerCommentSlot"
+    tickerCommentSlotDiv.style.fontSize = commentBodySize + "px"
+    mainDiv.appendChild(tickerCommentSlotDiv)
+    return mainDiv;
 }

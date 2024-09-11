@@ -6,6 +6,8 @@
 //-add user exclusion list
 //-make scrolling work with firefox etc
 //-clean up upvote fallback so everything isn't duplicated
+//-add customizable list of urls that it doesn't work on
+//-switch it to being activated by a button?
 
 //Updates to make in google web store:
 //-I can add a youtube video to the web store post?? - maybe I record a shorter video without me talking?

@@ -167,14 +167,16 @@ function initiateLTT() {
             vidLoadLocation = vidLoadLocation.parentNode
             vidLoadLocation = vidLoadLocation.parentNode
         }
+
         //finding the first child of our video location
         let theFirstChild = vidLoadLocation.firstChild
         //creating a div
-        let newElement = document.createElement("div")
+        let newElement = document.createElement('div')
         //inserting the new div directly before the video location's first child
         vidLoadLocation.insertBefore(newElement, theFirstChild)
-        //grabing the html from html-generator.js and placing it into new div we just added
-        newElement.innerHTML = getTickerInsertHTML(tickerSiteSpecificId)
+        //grabbing the html from html-generator.js and placing it into new div we just added
+        newElement.appendChild(getTickerInsertHTML(tickerSiteSpecificId))
+
     }
 
 }
