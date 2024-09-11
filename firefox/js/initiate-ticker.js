@@ -32,8 +32,20 @@ function blastOff() {
     setTimeout(() => {
         //not going to start anything if the user hasn't set this to true
         if (tickerActive == true) {
-            //starts the function below
-            initiateLTT();
+            if (inIFrame()) {
+                //wait a little longer to give "YouTube Over Commercials (YTOC)" extension a chance to load if it is also being used
+                setTimeout(() => {
+                    //make sure YTOC overlay indicator is not in frame this script is running in
+                    if (document.getElementById('YTOC-LTT-Blocker')) {
+                        //do not run LTT extension in YTOC overlay video
+                        console.log('LTT extension will not run in YTOC extension overlay videos.');
+                    } else {
+                        initiateLTT();
+                    }
+                }, 2000);
+            } else {
+                initiateLTT();
+            }
         }
     }, 2000);
 }
@@ -167,4 +179,13 @@ function initiateLTT() {
 
     }
 
+}
+
+
+function inIFrame() {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
 }

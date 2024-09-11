@@ -1,3 +1,15 @@
+//Things to improve:
+//-add grab current url feature
+//-on upvote min drop feature, have it load a second page of comments in case the comment delay feature is still causing comments not to show
+//-show flair somehow?
+//-add tool tips so when you hover over the text in the popup it will tell you what it does
+//-add user exclusion list
+//-make scrolling work with firefox etc
+//-clean up upvote fallback so everything isn't duplicated
+
+//Updates to make in google web store:
+//-I can add a youtube video to the web store post?? - maybe I record a shorter video without me talking?
+
 //grab whether or not the user set the ticker to active
 chrome.storage.sync.get(['tickerActiveChrome'], (result) => {
     //if user has not set this value yet, set it to true
