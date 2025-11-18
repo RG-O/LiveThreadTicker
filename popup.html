@@ -9,11 +9,26 @@
 <body>
     <form id="optionsForm">
         <input class="power-button" type="checkbox" name="tickerActive" id="tickerActive">
-        <label for="tickerActive"><span><br><br><br>Click to enable</span></label>
-        <h1><span style="color: rgb(140, 179, 210);">L</span>TT</h1>
-        <br>
-        <b>Live Thread Comment Section URL:</b>
-        <input type="text" name="rLTURL" id="rLTURL"><br>
+        <label for="tickerActive" style="color: red;"><span><br><br><br>Click to enable</span></label>
+        <h1 style="letter-spacing: 2px;"><span style="color: rgb(255, 69, 0);">L</span>TT</h1>
+        <div class="lcb-promo">
+            <div style="padding-bottom: 5px">
+                <b>NEW!</b> Check out my other free open-source chrome extension that blocks commercials during your game stream and automatically plays YouTube, Spotify, or other media in their place.
+            </div>
+            <div>
+                <a href="https://chromewebstore.google.com/detail/live-commercial-blocker-a/eikhblhblnhmagncgpfbofhbkpgbohif" target="_blank">Get on Chrome Web Store</a>
+            </div>
+        </div>
+        <b>Reddit Live Thread Comment Section URL:</b>
+        
+        <div class="id-input-row">
+            <!--<input type="text" name="otherVideoURL" id="otherVideoURL">-->
+            <input type="text" name="rLTURL" id="rLTURL"><br>
+            <button id="pull-button-rLTURL" class="pull-id-button">
+                &#x2B07;&#xFE0F;
+                <span class="pull-id-tooltip">Pull URL from current tab.</span>
+            </button>
+        </div>
         <br>
         <b>Display Location:</b>
         <label class="display-location-label" for="displayLocation-bottom">Bottom</label>
@@ -33,22 +48,13 @@
         <b>Comment Font Size (pixels):</b>
         <input type="number" name="commentFontSize" id="commentFontSize"><br>
         <br>
-        <button id="ltt-expand-button" type="button" class="collapsible">Show Advanced Settings...</button>
+        <button id="ltt-expand-button" type="button" class="collapsible">Show Troubleshooting/Advanced Settings...</button>
         <div class="advanced">
-            <span style="text-decoration: underline;"><b>Advanced Settings</b></span><br>
+            <span style="text-decoration: underline;"><b>Troubleshooting Settings:</b></span><br>
             <br>
-            <input type="checkbox" name="upVoteFallback" id="upVoteFallback">
-            <label class="upvote-fallback-label" for="upVoteFallback">
-                Drop upvote minimum if no recent comments meet threshold? (Vote count will display in red when occurs)
-            </label><br>
-            <br>
-            <input type="checkbox" name="scrollEnabled" id="scrollEnabled">
-            <label class="scroll-enabled-label" for="scrollEnabled">
-                Enable scrolling? (beta)
-            </label><br>
-            <br>
-            <b>Max Comments Loaded Per Batch:</b>
-            <input type="number" name="maxCommentLoad" id="maxCommentLoad"><br>
+            <div class="note">
+                <b>Ticker not displaying?</b> Or not displaying when in fullscreen? Try adjusting Display Level, clicking "Save", and then refreshing the page with the stream. Recommended troubleshooting order: "Video Level 2" -> "Site Specific" ->  "Video Level 3" -> "Video Level 4" -> "Page" -> "Video Level 1"
+            </div>
             <br>
             <b>Display Level:</b>
             <label class="display-level-label" for="displayLevel-vid1">Video Level 1</label>
@@ -63,18 +69,27 @@
             <input type="radio" id="displayLevel-video" name="displayLevel" value="video"><br>
             <label class="display-level-label" for="displayLevel-page">Page</label>
             <input type="radio" id="displayLevel-page" name="displayLevel" value="page"><br>
-            <span class="note">
-                Recommended Display Level setting is "Video Level 2". If ticker is not loading on video or not carrying over to full screen, try toggling between the different levels. Last resort should be "Page".
-                If set to "Page" and ticker is disappearing when switching video to full screen, try using key F11 to enable full screen instead of the full screen button on the video player.
-                WARNING: Ticker most likely will not display if Display Location is set to "Bottom" and Display Level is set to "Video Level 1"
-            </span><br>
+            <br>
+            <span style="text-decoration: underline;"><b>Advanced Settings:</b></span><br>
             <br>
             <b>Text Exclusion List</b><span class="note"> (seperate values with commas)</span><b>:</b>
             <input type="text" name="textExclusionList" id="textExclusionList"><br>
             <span class="note">
-                This will suppress displaying comments that contain any of the values that you enter. Example: "commercial,commentary,suck"
+                This will suppress displaying comments that contain any of the values that you enter. Example: "commercial,ads,commentary,commentator,refs,officials"
             </span><br>
             <br>
+            <b>Max Comments Loaded Per Batch:</b>
+            <input type="number" name="maxCommentLoad" id="maxCommentLoad"><br>
+            <br>
+            <input type="checkbox" name="upVoteFallback" id="upVoteFallback">
+            <label class="upvote-fallback-label" for="upVoteFallback">
+                Drop upvote minimum if no recent comments meet threshold? (Vote count will display in red when occurs)
+            </label><br>
+            <br>
+            <input type="checkbox" name="scrollEnabled" id="scrollEnabled">
+            <label class="scroll-enabled-label" for="scrollEnabled">
+                Enable scrolling? (beta)
+            </label><br>
         </div>
     </form>
     <br>

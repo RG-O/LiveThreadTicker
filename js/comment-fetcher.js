@@ -13,7 +13,7 @@ var usernameSize;
 chrome.storage.sync.get(['rLTURL', 'upVoteMin', 'delaySeconds', 'commentLoadInterval', 'maxCommentLoad', 'tickerActiveChrome', 'upVoteFallback', 'commentFontSize', 'textExclusionList', 'scrollEnabled'], (result) => {
     //if these settings have not been entered yet, it won't try to set them, otherwise there is an error on the slice
     if (result.upVoteMin == null) {
-        console.log("Need to input URL into Live Thread Ticker console.")
+        console.log("Need to input URL into Live Thread Ticker console.");
     } else {
         //seting the values as they need to be for them to work for the comment fetcher
         jsonRLTURL = result.rLTURL.slice(0, -1) + ".json?sort=new"
@@ -100,7 +100,7 @@ function fetchComments() {
             var fullCommentList = ''
             var finalOutput = ''
             //This is the "logo"
-            var beginning = '<span style=\"color: rgb(140, 179, 210);\">L</span>TT '
+            var beginning = '<span style=\"color: rgb(255, 69, 0);\">L</span>TT '
 
             //fetching the json from the user inputted url
             //adding date to the end of the url since firefox won't bother re-reading something it just read
@@ -116,7 +116,7 @@ function fetchComments() {
                             let upVotes = body[1].data.children[index].data.ups
                             index1++
                             //concatenating comment after comment, also changing name and vote font size and color
-                            fullCommentList += " <span style=\"font-size: " + usernameSize + "px; color: rgb(140, 179, 210);\">" + author + "(" + upVotes + "):</span>" + comment + "&nbsp;";
+                            fullCommentList += " <span style=\"font-size: " + usernameSize + "px; color: rgb(205, 227, 249);\">" + author + "(" + upVotes + "):</span>" + comment + "&nbsp;";
                         }
                     }
                     //check to see if any comments that met the requirments were found AND if the user has the upvote fallback preference set
@@ -130,7 +130,7 @@ function fetchComments() {
                                 let upVotes = body[1].data.children[index].data.ups
                                 index1++
                                 //concatenating comment after comment, also changing name and vote font size and color, but this time changing the upvote count to red to indicate to the user that we had to drop the min upvote requirements
-                                fullCommentList += " <span style=\"font-size: " + usernameSize + "px; color: rgb(140, 179, 210);\">" + author + "(" + "<span style=\"!important; color: rgb(255, 68, 51);\">" + upVotes + "</span>" + "):</span>" + comment + "&nbsp;";
+                                fullCommentList += " <span style=\"font-size: " + usernameSize + "px; color: rgb(205, 227, 249);\">" + author + "(" + "<span style=\"!important; color: rgb(255, 68, 51);\">" + upVotes + "</span>" + "):</span>" + comment + "&nbsp;";
                             }
                         }
                         //adding scroll if the user has it set

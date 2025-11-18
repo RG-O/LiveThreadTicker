@@ -61,6 +61,14 @@ chrome.storage.sync.get(['displayLocation', 'rLTURL', 'upVoteMin', 'delaySeconds
             optionsForm.textExclusionList.value = result.textExclusionList;
         }
     }
+
+    document.getElementById('pull-button-rLTURL').addEventListener('click', async (event) => {
+        event.preventDefault();
+        let id = await getIDFromCurrentTab();
+        if (id) {
+            optionsForm.rLTURL.value = id;
+        }
+    });
 });
 
 //grab comment font size (I'm grabbing this outside of all the other ones since this setting came later in an update)
@@ -115,4 +123,22 @@ document.getElementById("ltt-save-button").onclick = function () {
 //close chrome extension window if they click to close
 document.getElementById("ltt-close-button").onclick = function () {
     window.close();
+}
+
+
+async function getIDFromCurrentTab() {
+    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    console.log(tab);
+    const url = new URL(tab.url);
+
+    if (url.hostname.indexOf('reddit') >= 0) {
+        //clear unneeded parts of URL
+        url.search = '';
+        url.hash = '';
+
+        return url.toString();
+    } else {
+        alert('Error: Must be on Reddit to pull URL.');
+        return false;
+    }
 }

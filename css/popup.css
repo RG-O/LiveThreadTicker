@@ -1,6 +1,6 @@
 body {
     background-color: black;
-    width: 300px;
+    width: 350px;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -85,3 +85,45 @@ button {
 .advanced {
     display: none;
 }
+
+.lcb-promo {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    position: relative;
+    padding: .5rem .5rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.id-input-row {
+    display: flex;
+    gap: 3px;
+}
+
+.pull-id-button {
+    position: relative;
+    display: inline-block;
+}
+
+    .pull-id-button:hover .pull-id-tooltip {
+        visibility: visible;
+    }
+
+    .pull-id-button .pull-id-tooltip {
+        visibility: hidden;
+        width: max-content;
+        background-color: white;
+        color: black;
+        text-align: center;
+        padding: 5px;
+        border-style: solid !important;
+        border: 1px;
+        border-color: #ccc;
+        border-radius: 3px;
+        position: absolute;
+        right: -2px;
+        bottom: 23px;
+        z-index: 999;
+    }
